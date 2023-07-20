@@ -33,13 +33,10 @@ class _CarteGoogleState extends State<CarteGoogle> {
 
     Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
-
         me.location = GeoPoint(widget.location.latitude, widget.location.longitude);
-
         Map<String,dynamic> map = {
           "POSITION": me.location
         };
-
         FirestoreHelper().updateUser(me.id, map);
       });
     });
@@ -52,11 +49,9 @@ class _CarteGoogleState extends State<CarteGoogle> {
       QuerySnapshot snapshot = await FirestoreHelper().cloudUsers.get();
       for (var doc in snapshot.docs) {
         MyUser user = MyUser(doc);
-
         if (user.id == me.id) {
           continue;
         }
-
         otherUser.add(user);
       }
     } catch (e) {
@@ -67,13 +62,13 @@ class _CarteGoogleState extends State<CarteGoogle> {
   Set<Marker>getMarkers() {
     Set<Marker> markers = {};
     for (var user in otherUser) {
-      if (user.location == null) {
-        continue ;
-      }
+      // if (user.location == null) {
+      //   continue ;
+      // }
 
       markers.add(
         Marker(
-          markerId: MarkerId("test"),
+          markerId: MarkerId(user.id),
           position: LatLng(
             user.location!.latitude,
             user.location!.longitude
