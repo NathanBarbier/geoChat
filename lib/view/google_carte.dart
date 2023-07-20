@@ -1,8 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geo_chat/controller/firestore_helper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../globale.dart';
+import '../model/my_user.dart';
 
 class CarteGoogle extends StatefulWidget {
   final Position location;
@@ -15,6 +20,7 @@ class CarteGoogle extends StatefulWidget {
 class _CarteGoogleState extends State<CarteGoogle> {
   Completer<GoogleMapController> completer = Completer();
   late CameraPosition camera;
+  List<MyUser> otherUser = [];
 
   @override
   void initState() {
@@ -22,7 +28,61 @@ class _CarteGoogleState extends State<CarteGoogle> {
       target: LatLng(widget.location.latitude, widget.location.longitude),
       zoom: 14
     );
+
+    getAllUsers();
+
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      setState(() {
+
+        me.location = GeoPoint(widget.location.latitude, widget.location.longitude);
+
+        Map<String,dynamic> map = {
+          "POSITION": me.location
+        };
+
+        FirestoreHelper().updateUser(me.id, map);
+      });
+    });
+
     super.initState();
+  }
+
+  getAllUsers() async {
+    try {
+      QuerySnapshot snapshot = await FirestoreHelper().cloudUsers.get();
+      for (var doc in snapshot.docs) {
+        MyUser user = MyUser(doc);
+
+        if (user.id == me.id) {
+          continue;
+        }
+
+        otherUser.add(user);
+      }
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
+
+  Set<Marker>getMarkers() {
+    Set<Marker> markers = {};
+    for (var user in otherUser) {
+      if (user.location == null) {
+        continue ;
+      }
+
+      markers.add(
+        Marker(
+          markerId: MarkerId("test"),
+          position: LatLng(
+            user.location!.latitude,
+            user.location!.longitude
+          ),
+        )
+      );
+    }
+
+    return markers;
   }
 
   @override
@@ -36,6 +96,7 @@ class _CarteGoogleState extends State<CarteGoogle> {
         control.setMapStyle(newStyle);
         completer.complete(control);
       },
+      markers: getMarkers(),
     );
   }
 }

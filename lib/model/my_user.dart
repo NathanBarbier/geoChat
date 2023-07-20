@@ -1,4 +1,6 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../globale.dart';
 
@@ -12,6 +14,7 @@ class MyUser {
   String? avatar;
   Gender genre = Gender.indefini;
   List? favoris;
+  GeoPoint? location;
 
   MyUser.empty() {
     id = "";
@@ -20,7 +23,7 @@ class MyUser {
     prenom = "";
   }
 
-  MyUser(DocumentSnapshot snapshot){
+  MyUser(DocumentSnapshot snapshot) {
     id = snapshot.id;
     Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
     mail = map["EMAIL"];
@@ -42,6 +45,8 @@ class MyUser {
 
     avatar = map["AVATAR"] ?? defaultImage;
     favoris = map["FAVORIS"] ?? [];
+
+    location = map["POSITION"];
   }
 
   String get fullname {

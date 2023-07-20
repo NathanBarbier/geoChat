@@ -16,7 +16,7 @@ class _MyMapViewState extends State<MyMapView> {
   Widget build(BuildContext context) {
     return FutureBuilder<Position>(
       future: PermissionGps().init(),
-        builder: (context, snap) {
+      builder: (context, snap) {
         if(snap.data == null) {
           return Container(
             child: Center(
