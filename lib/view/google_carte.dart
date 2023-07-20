@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geo_chat/controller/firestore_helper.dart';
+import 'package:geo_chat/controller/messagerie.dart';
+import 'package:geo_chat/controller/profile_view.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -33,10 +35,13 @@ class _CarteGoogleState extends State<CarteGoogle> {
 
     Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
+
         me.location = GeoPoint(widget.location.latitude, widget.location.longitude);
+
         Map<String,dynamic> map = {
           "POSITION": me.location
         };
+
         FirestoreHelper().updateUser(me.id, map);
       });
     });
@@ -49,9 +54,11 @@ class _CarteGoogleState extends State<CarteGoogle> {
       QuerySnapshot snapshot = await FirestoreHelper().cloudUsers.get();
       for (var doc in snapshot.docs) {
         MyUser user = MyUser(doc);
+
         if (user.id == me.id) {
           continue;
         }
+
         otherUser.add(user);
       }
     } catch (e) {
@@ -62,20 +69,28 @@ class _CarteGoogleState extends State<CarteGoogle> {
   Set<Marker>getMarkers() {
     Set<Marker> markers = {};
     for (var user in otherUser) {
-      // if (user.location == null) {
-      //   continue ;
-      // }
+      if (user.location == null) {
+        continue;
+      }
 
       markers.add(
-        Marker(
-          markerId: MarkerId(user.id),
-          position: LatLng(
-            user.location!.latitude,
-            user.location!.longitude
-          ),
-        )
+          Marker(
+              markerId: MarkerId(user.id),
+              position: LatLng(
+                  user.location!.latitude,
+                  user.location!.longitude
+              ),
+              infoWindow: InfoWindow(title: user.fullname, snippet: ''),
+              onTap:(){
+                Navigator.push(context,MaterialPageRoute(builder: (context){
+                  return MyMessagerie(user: user);
+                }));
+              }
+          )
       );
     }
+
+
 
     return markers;
   }
