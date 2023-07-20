@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geo_chat/controller/my_persmission.dart';
+import 'package:geo_chat/view/loading_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -7,7 +9,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  MyPermissionPhoto().init();
   runApp(const MyApp());
 }
 
@@ -21,11 +23,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
 
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.purple,
       ),
-      home: const MyHomePage(),
+      home: const MyLoading(),
       debugShowCheckedModeBanner: false,
-    );
+      );
   }
 }
+
+

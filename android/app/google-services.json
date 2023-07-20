@@ -29,6 +29,13 @@
             {
               "client_id": "558848817521-fa16imo002npkd13hd0ok31ous0heetn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "558848817521-2hcdstko5mv5ce9ut8v8ac1ahft2r32o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.geoChat"
+              }
             }
           ]
         }
