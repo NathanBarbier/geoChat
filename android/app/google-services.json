@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "558848817521",
+    "project_id": "geo-base-1a00b",
+    "storage_bucket": "geo-base-1a00b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558848817521:android:1d858594a37676ded21ed0",
+        "android_client_info": {
+          "package_name": "com.example.geo_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558848817521-fa16imo002npkd13hd0ok31ous0heetn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_c-BuJMy8MGHfhG-2Yv9RLk0POmudDyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558848817521-fa16imo002npkd13hd0ok31ous0heetn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
