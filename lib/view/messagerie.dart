@@ -14,31 +14,71 @@ class MyMessagerie extends StatefulWidget {
 }
 
 class _MyMessagerieState extends State<MyMessagerie> {
-  TextEditingController message = TextEditingController();
+  TextEditingController messageSend = TextEditingController();
   FirestoreHelper firestoreHelper = FirestoreHelper();
   List<Map<dynamic, dynamic>> messages = [];
 
   @override
   void initState() {
     me.messagerie!.forEach((message) {
-      if(message["destinataire"] == widget.user.id) {
+      if(message["DESTINATAIRE"] == widget.user.id) {
         messages.add(message);
       }
     });
 
     widget.user.messagerie!.forEach((message) {
-      if(message["destinataire"] == me.id) {
+      if(message["DESTINATAIRE"] == me.id) {
         messages.add(message);
       }
     });
 
     messages.sort((a, b) {
-      return a["date"].compareTo(b["date"]);
+      return a["DATE"].compareTo(b["DATE"]);
     });
 
     print(messages);
 
     super.initState();
+  }
+
+  onSendMessage(messageTexte) {
+    setState(() {
+      Map<String, dynamic> message = {
+        "MESSAGE": messageTexte,
+        "DATE": DateTime.now(),
+        "DESTINATAIRE": widget.user.id,
+      };
+
+      me.messagerie!.add(message);
+      messages.add(message);
+
+      Map<String, dynamic> map = {
+        "MESSAGERIE": me.messagerie
+      };
+
+      FirestoreHelper().updateUser(me.id, map);
+    });
+  }
+
+  void simulateReceiveMessage() {
+    setState(() {
+      Map<String, dynamic> newMessage = {
+        "MESSAGE": "Nouveau message reçu",
+        "DATE": DateTime.now(),
+        "DESTINATAIRE": me.id, // Mettez l'ID du destinataire ici
+      };
+
+      receiveMessage(newMessage);
+    });
+  }
+
+  void receiveMessage(Map<String, dynamic> message) {
+    setState(() {
+      messages.add(message);
+      messages.sort((a, b) {
+        return a["DATE"].compareTo(b["DATE"]);
+      });
+    });
   }
 
   @override
@@ -49,13 +89,36 @@ class _MyMessagerieState extends State<MyMessagerie> {
         title: Text(widget.user.fullname),
         elevation: 0,
       ),
-      body: ListView.builder(
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          return ChatBubble(messages[index]);
-        },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                return ChatBubble(messages[index]);
+              },
+            ),
+          ),
+          TextField(
+            controller: messageSend,
+            decoration: InputDecoration(
+              hintText: 'Saisir un message...',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (messageSend.text.trim().isNotEmpty) {
+                onSendMessage(messageSend.text);
+                messageSend.clear();
+              }
+            },
+            child: const Icon(Icons.send),
+          ),
+        ],
       ),
-
     );
   }
+
 }

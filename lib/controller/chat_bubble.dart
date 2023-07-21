@@ -11,15 +11,15 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      alignment: message["destinataire"] == me.id ? Alignment.centerLeft : Alignment.centerRight,
+      alignment: message["DESTINATAIRE"] == me.id ? Alignment.centerLeft : Alignment.centerRight,
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: message["destinataire"] == me.id ? Colors.grey[300] : Colors.blue,
+          color: message["DESTINATAIRE"] == me.id ? Colors.grey[300] : Colors.blue,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          message["message"],
+          message["MESSAGE"],
           style: TextStyle(color: Colors.white),
         ),
       ),
