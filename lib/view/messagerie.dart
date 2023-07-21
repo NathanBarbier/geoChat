@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geo_chat/controller/chat_bubble.dart';
 import 'package:geo_chat/controller/firestore_helper.dart';
 
 import '../globale.dart';
@@ -35,6 +36,8 @@ class _MyMessagerieState extends State<MyMessagerie> {
       return a["date"].compareTo(b["date"]);
     });
 
+    print(messages);
+
     super.initState();
   }
 
@@ -46,7 +49,13 @@ class _MyMessagerieState extends State<MyMessagerie> {
         title: Text(widget.user.fullname),
         elevation: 0,
       ),
-      body: Container(),
+      body: ListView.builder(
+        itemCount: messages.length,
+        itemBuilder: (context, index) {
+          return ChatBubble(messages[index]);
+        },
+      ),
+
     );
   }
 }
