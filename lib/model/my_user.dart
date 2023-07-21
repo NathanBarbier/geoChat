@@ -47,7 +47,12 @@ class MyUser {
     favoris = map["FAVORIS"] ?? [];
 
     location = map["POSITION"];
-    messagerie = map["MESSAGERIE"] ?? [];
+    String? provisoireMessagerie = map["MESSAGERIE"];
+    if(provisoireMessagerie == null) {
+      messagerie = "";
+    } else {
+      messagerie = provisoireMessagerie;
+    }
   }
 
   String get fullname {

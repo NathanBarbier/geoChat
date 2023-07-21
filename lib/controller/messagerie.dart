@@ -20,7 +20,13 @@ class _MyMessagerieState extends State<MyMessagerie> {
   void initState() {
     if (me.messagerie == null || me.messagerie!.isEmpty)  {
       setState(() {
-        me.messagerie = firestoreHelper.createMessagerie(me.id);
+       me.messagerie = firestoreHelper.createMessagerie(me.id);
+
+       Map<String,dynamic> map = {
+         "MESSAGERIE": me.messagerie,
+       };
+
+       FirestoreHelper().updateUser(me.id, map);
       });
     }
 

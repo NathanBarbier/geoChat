@@ -4,14 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../model/my_messagerie.dart';
 import '../model/my_user.dart';
 
 class FirestoreHelper{
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
   final cloudUsers = FirebaseFirestore.instance.collection("UTILISATEUR");
-  final cloudMessagerie = FirebaseFirestore.instance.collection("MESSAGERIE");
+  final cloudMessagerie = FirebaseFirestore.instance.collection("MESSAGERIES");
 
   register(String email, String password, String nom, String prenom) async {
     UserCredential resultat = await auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -26,20 +25,20 @@ class FirestoreHelper{
     return getUser(uid);
   }
 
-  createMessagerie(String idUser) async {
-    DocumentReference MessagerieReference =  cloudMessagerie.doc();
+  createMessagerie(String idUser) {
+    DocumentReference messagerieReference = cloudMessagerie.doc();
 
-    Map<String,dynamic> map = {
+    Map<String, dynamic> map = {
       "IDUSER": idUser
     };
 
-    await MessagerieReference.set(map);
-    return MessagerieReference.id;
+    messagerieReference.set(map);
+    return messagerieReference.id;
   }
 
   Future<String>stockageImage(String ref, String uid, String nameData, Uint8List bytesData) async {
     TaskSnapshot snapshot = await storage.ref("$ref/$uid/$nameData").putData(bytesData);
-    String  urlData = await snapshot.ref.getDownloadURL();
+    String urlData = await snapshot.ref.getDownloadURL();
     return urlData;
   }
 
