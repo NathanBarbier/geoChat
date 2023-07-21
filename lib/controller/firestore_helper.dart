@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geo_chat/model/my_messagerie.dart';
 
 import '../model/my_user.dart';
 
@@ -55,6 +56,11 @@ class FirestoreHelper{
   Future<MyUser>getUser(String uid) async {
     DocumentSnapshot snapshot = await cloudUsers.doc(uid).get();
     return MyUser(snapshot);
+  }
+
+  Future<MyMessagerie>getMessagerie(String uid) async {
+    DocumentSnapshot snapshot = await cloudMessagerie.doc(uid).get();
+    return MyMessagerie.get(snapshot);
   }
 
   AddUser(String uid, Map<String,dynamic> data) {

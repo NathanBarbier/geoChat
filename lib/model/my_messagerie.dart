@@ -6,19 +6,15 @@ import 'my_user.dart';
 
 class MyMessagerie {
   late String id;
-  late String idUser;
-  List<MyMessage>? messages;
+  Map<String, dynamic>? messagerie;
 
-  MyMessagerie.new(MyUser destinataire) {
+  MyMessagerie.new() {
     id = "";
-    idUser = me.id;
-    destinataire = destinataire;
   }
 
   MyMessagerie.get(DocumentSnapshot snapshot) {
     id = snapshot.id;
     Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
-    idUser = map["IDUSER"];
-    messages = map["MESSAGES"] ?? [];
+    messagerie = map["MESSAGERIE"] ?? [];
   }
 }
