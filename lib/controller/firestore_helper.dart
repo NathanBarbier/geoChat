@@ -10,6 +10,7 @@ class FirestoreHelper{
   final auth = FirebaseAuth.instance;
   final storage = FirebaseStorage.instance;
   final cloudUsers = FirebaseFirestore.instance.collection("UTILISATEUR");
+  final cloudMessagerie = FirebaseFirestore.instance.collection("MESSAGERIES");
 
   register(String email, String password, String nom, String prenom) async {
     UserCredential resultat = await auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -24,9 +25,20 @@ class FirestoreHelper{
     return getUser(uid);
   }
 
+  createMessagerie(String idUser) {
+    DocumentReference messagerieReference = cloudMessagerie.doc();
+
+    Map<String, dynamic> map = {
+      "IDUSER": idUser
+    };
+
+    messagerieReference.set(map);
+    return messagerieReference.id;
+  }
+
   Future<String>stockageImage(String ref, String uid, String nameData, Uint8List bytesData) async {
     TaskSnapshot snapshot = await storage.ref("$ref/$uid/$nameData").putData(bytesData);
-    String  urlData = await snapshot.ref.getDownloadURL();
+    String urlData = await snapshot.ref.getDownloadURL();
     return urlData;
   }
 
@@ -48,4 +60,8 @@ class FirestoreHelper{
   AddUser(String uid, Map<String,dynamic> data) {
     cloudUsers.doc(uid).set(data);
   }
+
+  // Future<MyMessagerie>getMessagerie(String idUser) {
+  //   DocumentSnapshot snapshot = await cloudMessagerie
+  // }
 }
