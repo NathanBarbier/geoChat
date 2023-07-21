@@ -1,6 +1,5 @@
 
 import 'package:geo_chat/model/my_user.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 enum Gender {homme, femme, transgenre, non_binaire, indefini}
 

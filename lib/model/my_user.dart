@@ -1,6 +1,5 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 
 import '../globale.dart';
 
@@ -15,6 +14,7 @@ class MyUser {
   Gender genre = Gender.indefini;
   List? favoris;
   GeoPoint? location;
+  String? messagerie;
 
   MyUser.empty() {
     id = "";
@@ -47,6 +47,7 @@ class MyUser {
     favoris = map["FAVORIS"] ?? [];
 
     location = map["POSITION"];
+    messagerie = map["MESSAGERIE"] ?? [];
   }
 
   String get fullname {

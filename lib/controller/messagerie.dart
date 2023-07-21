@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geo_chat/controller/firestore_helper.dart';
 
+import '../globale.dart';
 import '../model/my_user.dart';
 
 class MyMessagerie extends StatefulWidget {
@@ -11,7 +13,19 @@ class MyMessagerie extends StatefulWidget {
 }
 
 class _MyMessagerieState extends State<MyMessagerie> {
+  TextEditingController message = TextEditingController();
+  FirestoreHelper firestoreHelper = FirestoreHelper();
 
+  @override
+  void initState() {
+    if (me.messagerie == null || me.messagerie!.isEmpty)  {
+      setState(() {
+        me.messagerie = firestoreHelper.createMessagerie(me.id);
+      });
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +35,7 @@ class _MyMessagerieState extends State<MyMessagerie> {
         title: Text(widget.user.fullname),
         elevation: 0,
       ),
-      body: Text("salut"),
+      body: Container(),
     );
   }
 }

@@ -69,7 +69,7 @@ class _MyRegisterViewState extends State<MyRegisterView> {
             centerTitle : true
         ),
         extendBodyBehindAppBar: true,
-        body:  Stack(
+        body: Stack(
           children: [
             MyBackground(),
             SafeArea(
