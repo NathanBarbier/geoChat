@@ -14,7 +14,7 @@ class MyUser {
   Gender genre = Gender.indefini;
   List? favoris;
   GeoPoint? location;
-  String? messagerie;
+  List? messagerie;
 
   MyUser.empty() {
     id = "";
@@ -47,12 +47,9 @@ class MyUser {
     favoris = map["FAVORIS"] ?? [];
 
     location = map["POSITION"];
-    String? provisoireMessagerie = map["MESSAGERIE"];
-    if(provisoireMessagerie == null) {
-      messagerie = "";
-    } else {
-      messagerie = provisoireMessagerie;
-    }
+
+
+    messagerie = map["MESSAGERIE"] ?? [];
   }
 
   String get fullname {

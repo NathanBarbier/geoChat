@@ -15,20 +15,25 @@ class MyMessagerie extends StatefulWidget {
 class _MyMessagerieState extends State<MyMessagerie> {
   TextEditingController message = TextEditingController();
   FirestoreHelper firestoreHelper = FirestoreHelper();
+  List<Map<dynamic, dynamic>> messages = [];
 
   @override
   void initState() {
-    if (me.messagerie == null || me.messagerie!.isEmpty)  {
-      setState(() {
-       me.messagerie = firestoreHelper.createMessagerie(me.id);
+    me.messagerie!.forEach((message) {
+      if(message["destinataire"] == widget.user.id) {
+        messages.add(message);
+      }
+    });
 
-       Map<String,dynamic> map = {
-         "MESSAGERIE": me.messagerie,
-       };
+    widget.user.messagerie!.forEach((message) {
+      if(message["destinataire"] == me.id) {
+        messages.add(message);
+      }
+    });
 
-       FirestoreHelper().updateUser(me.id, map);
-      });
-    }
+    messages.sort((a, b) {
+      return a["date"].compareTo(b["date"]);
+    });
 
     super.initState();
   }

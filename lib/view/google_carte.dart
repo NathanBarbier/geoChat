@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geo_chat/controller/firestore_helper.dart';
-import 'package:geo_chat/controller/messagerie.dart';
+import 'package:geo_chat/view/messagerie.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
